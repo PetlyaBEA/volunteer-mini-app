@@ -422,6 +422,89 @@
                 gap: 6px;
             }
         }
+
+        /* APP SCREENS */
+        .screen {
+            position: fixed;
+            inset: 0;
+            z-index: 50;
+            display: none;
+            overflow-y: auto;
+            padding: 18px 16px 110px;
+            background:
+                radial-gradient(circle at 100% 0%, #e8e4ff 0, transparent 30%),
+                radial-gradient(circle at 0% 30%, #dff7ff 0, transparent 25%),
+                var(--bg);
+        }
+
+        .screen.open {
+            display: block;
+        }
+
+        .screen-inner {
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .screen-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .back-btn {
+            width: 42px;
+            height: 42px;
+            border: 0;
+            border-radius: 14px;
+            background: rgba(255,255,255,.86);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .screen-title {
+            font-size: 22px;
+            font-weight: 850;
+        }
+
+        .screen-card {
+            padding: 17px;
+            border-radius: 22px;
+            background: var(--card);
+            box-shadow: var(--shadow);
+            margin-bottom: 12px;
+        }
+
+        .screen-card h3 {
+            margin: 0;
+            font-size: 16px;
+        }
+
+        .screen-card p {
+            margin: 8px 0 0;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .screen-action {
+            width: 100%;
+            margin-top: 12px;
+            padding: 12px;
+            border: 0;
+            border-radius: 14px;
+            color: white;
+            background: var(--accent);
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        body.screen-open {
+            overflow: hidden;
+        }
+
     </style>
 </head>
 
@@ -485,25 +568,25 @@
 
         <div class="quick-grid">
 
-            <button class="quick-card" onclick="notify('📅 Открываем мероприятия')">
+            <button class="quick-card" onclick="openEventsScreen()">
                 <div class="quick-icon">📅</div>
                 <div class="quick-title">Мероприятия</div>
                 <div class="quick-subtitle">Найди куда пойти</div>
             </button>
 
-            <button class="quick-card" onclick="notify('🏆 Рейтинг скоро будет доступен')">
+            <button class="quick-card" onclick="openScreen('ratingScreen')">
                 <div class="quick-icon">🏆</div>
                 <div class="quick-title">Рейтинг</div>
                 <div class="quick-subtitle">Сравни себя с другими</div>
             </button>
 
-            <button class="quick-card" onclick="notify('🎖 Достижения скоро будут доступны')">
+            <button class="quick-card" onclick="openScreen('achievementsScreen')">
                 <div class="quick-icon">🎖</div>
                 <div class="quick-title">Достижения</div>
                 <div class="quick-subtitle">Собирай награды</div>
             </button>
 
-            <button class="quick-card" onclick="notify('📊 Открываем статистику')">
+            <button class="quick-card" onclick="openStatsScreen()">
                 <div class="quick-icon">📊</div>
                 <div class="quick-title">Статистика</div>
                 <div class="quick-subtitle">Твой прогресс</div>
@@ -519,7 +602,7 @@
         <div class="section-head">
             <div class="section-title">Ближайшее мероприятие</div>
 
-            <button class="section-link" onclick="notify('Список мероприятий')">
+            <button class="section-link" onclick="openEventsScreen()">
                 Все
             </button>
         </div>
@@ -539,8 +622,8 @@
                 </div>
             </div>
 
-            <button class="event-button" onclick="loadEvents(true)">
-                Обновить мероприятия
+            <button class="event-button" onclick="openEventsScreen()">
+                Посмотреть мероприятия
             </button>
 
         </div>
@@ -583,22 +666,22 @@
 
 <nav class="bottom-nav">
 
-    <button class="nav-item active" onclick="setActive(this)">
+    <button class="nav-item active" onclick="goHome(this)">
         <span class="nav-icon">🏠</span>
         Главная
     </button>
 
-    <button class="nav-item" onclick="setActive(this); notify('📅 Мероприятия')">
+    <button class="nav-item" onclick="setActive(this); openEventsScreen()">
         <span class="nav-icon">📅</span>
         События
     </button>
 
-    <button class="nav-item" onclick="setActive(this); notify('🏆 Рейтинг')">
+    <button class="nav-item" onclick="setActive(this); openScreen('ratingScreen')">
         <span class="nav-icon">🏆</span>
         Рейтинг
     </button>
 
-    <button class="nav-item" onclick="setActive(this); notify('👤 Профиль')">
+    <button class="nav-item" onclick="setActive(this); openProfileScreen()">
         <span class="nav-icon">👤</span>
         Профиль
     </button>
@@ -613,9 +696,8 @@
 <script>
     const tg = window.Telegram?.WebApp;
 
-// ВАЖНО:
-// После публикации API по HTTPS вставь сюда его базовый URL.
-const API_BASE = "https://virtually-sitemap-engineer-sheet.trycloudflare.com";
+    // API на твоём VPS через Cloudflare Tunnel.
+    const API_BASE = "https://virtually-sitemap-engineer-sheet.trycloudflare.com";
 
     if (tg) {
         tg.ready();
@@ -901,9 +983,224 @@ const API_BASE = "https://virtually-sitemap-engineer-sheet.trycloudflare.com";
         }
     }
 
+
+    function openScreen(id) {
+        document.querySelectorAll(".screen").forEach(
+            screen => screen.classList.remove("open")
+        );
+
+        const screen = document.getElementById(id);
+        if (!screen) return;
+
+        screen.classList.add("open");
+        document.body.classList.add("screen-open");
+    }
+
+    function closeScreen() {
+        document.querySelectorAll(".screen").forEach(
+            screen => screen.classList.remove("open")
+        );
+
+        document.body.classList.remove("screen-open");
+    }
+
+    function goHome(button) {
+        setActive(button);
+        closeScreen();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    async function openEventsScreen() {
+        openScreen("eventsScreen");
+
+        const box = document.getElementById("eventsScreenList");
+        box.innerHTML = `
+            <div class="screen-card">
+                <h3>Загрузка…</h3>
+                <p>Подключаемся к API.</p>
+            </div>
+        `;
+
+        try {
+            const payload = await api("/api/events");
+            const events = payload.events || [];
+
+            if (!events.length) {
+                box.innerHTML = `
+                    <div class="screen-card">
+                        <h3>Пока мероприятий нет</h3>
+                        <p>В твоём городе пока ничего не опубликовано.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            box.innerHTML = events.map(event => `
+                <div class="screen-card">
+                    <h3>${escapeHtml(event.title)}</h3>
+                    <p>
+                        📍 ${escapeHtml(event.city || "Город не указан")}<br>
+                        👥 ${Number(event.current_participants || 0)}
+                        ${event.max_participants > 0
+                            ? ` / ${Number(event.max_participants)}`
+                            : ""}
+                    </p>
+                    <p>${escapeHtml(event.description || "Без описания")}</p>
+                    <button
+                        class="screen-action"
+                        onclick="joinEvent(${Number(event.id)}, this)"
+                    >
+                        ✅ Записаться
+                    </button>
+                </div>
+            `).join("");
+        } catch (error) {
+            box.innerHTML = `
+                <div class="screen-card">
+                    <h3>Не удалось загрузить</h3>
+                    <p>${escapeHtml(error.message)}</p>
+                    <button class="screen-action" onclick="openEventsScreen()">
+                        🔄 Повторить
+                    </button>
+                </div>
+            `;
+        }
+    }
+
+    async function openProfileScreen() {
+        openScreen("profileScreen");
+
+        const box = document.getElementById("profileScreenContent");
+        box.innerHTML = `
+            <div class="screen-card">
+                <h3>Загрузка профиля…</h3>
+                <p>Получаем данные с сервера.</p>
+            </div>
+        `;
+
+        try {
+            const payload = await api("/api/profile");
+            const p = payload.profile;
+
+            box.innerHTML = `
+                <div class="screen-card">
+                    <h3>${escapeHtml(p.full_name || "Волонтёр")}</h3>
+                    <p>
+                        📍 ${escapeHtml(p.city || "Город не указан")}<br>
+                        🎓 ${escapeHtml(p.school || "Не указано")}<br>
+                        ⏱ ${Number(p.hours || 0)} часов<br>
+                        🪙 ${Number(p.coins || 0)} монет<br>
+                        🎖 ${escapeHtml(p.role_title || p.role || "Без роли")}<br>
+                        🟢 ${escapeHtml(p.status || "Активен")}
+                    </p>
+                </div>
+            `;
+        } catch (error) {
+            box.innerHTML = `
+                <div class="screen-card">
+                    <h3>Ошибка</h3>
+                    <p>${escapeHtml(error.message)}</p>
+                    <button class="screen-action" onclick="openProfileScreen()">
+                        🔄 Повторить
+                    </button>
+                </div>
+            `;
+        }
+    }
+
+    async function openStatsScreen() {
+        openScreen("statsScreen");
+
+        const summary = document.getElementById("statsSummary");
+        summary.textContent = "Загрузка…";
+
+        try {
+            const payload = await api("/api/profile");
+            const p = payload.profile;
+
+            summary.textContent =
+                `Часы: ${Number(p.hours || 0)} • ` +
+                `Мероприятия: ${Number(p.events_count || 0)} • ` +
+                `Монеты: ${Number(p.coins || 0)}`;
+        } catch (error) {
+            summary.textContent = error.message;
+        }
+    }
+
+
     document.addEventListener("DOMContentLoaded", loadDashboard);
 </script>
 
+
+
+<!-- IN-APP SCREENS -->
+<section id="eventsScreen" class="screen">
+    <div class="screen-inner">
+        <div class="screen-header">
+            <button class="back-btn" onclick="closeScreen()">←</button>
+            <div class="screen-title">📅 Мероприятия</div>
+        </div>
+        <div id="eventsScreenList">
+            <div class="screen-card">
+                <h3>Загрузка мероприятий…</h3>
+                <p>Получаем события с сервера.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="ratingScreen" class="screen">
+    <div class="screen-inner">
+        <div class="screen-header">
+            <button class="back-btn" onclick="closeScreen()">←</button>
+            <div class="screen-title">🏆 Рейтинг</div>
+        </div>
+        <div class="screen-card">
+            <h3>Рейтинг волонтёров</h3>
+            <p>Раздел подготовлен. Подключим реальный рейтинг после добавления отдельного API-метода.</p>
+        </div>
+    </div>
+</section>
+
+<section id="achievementsScreen" class="screen">
+    <div class="screen-inner">
+        <div class="screen-header">
+            <button class="back-btn" onclick="closeScreen()">←</button>
+            <div class="screen-title">🎖 Достижения</div>
+        </div>
+        <div class="screen-card">
+            <h3>Твои достижения</h3>
+            <p>Здесь будут награды и прогресс по ним. Пока показываем заглушку, чтобы интерфейс уже был полноценным.</p>
+        </div>
+    </div>
+</section>
+
+<section id="statsScreen" class="screen">
+    <div class="screen-inner">
+        <div class="screen-header">
+            <button class="back-btn" onclick="closeScreen()">←</button>
+            <div class="screen-title">📊 Статистика</div>
+        </div>
+        <div class="screen-card">
+            <h3>Твоя статистика</h3>
+            <p id="statsSummary">Загрузка…</p>
+        </div>
+    </div>
+</section>
+
+<section id="profileScreen" class="screen">
+    <div class="screen-inner">
+        <div class="screen-header">
+            <button class="back-btn" onclick="closeScreen()">←</button>
+            <div class="screen-title">👤 Профиль</div>
+        </div>
+        <div id="profileScreenContent">
+            <div class="screen-card">
+                <h3>Загрузка профиля…</h3>
+            </div>
+        </div>
+    </div>
+</section>
 
 </body>
 </html>

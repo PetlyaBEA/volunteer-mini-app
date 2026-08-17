@@ -2,6 +2,9 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta
         name="viewport"
         content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
@@ -505,6 +508,208 @@
             overflow: hidden;
         }
 
+
+
+        /* ADMIN MINI APP */
+        .bottom-nav.has-admin {
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .admin-hero {
+            padding: 18px;
+            margin-bottom: 14px;
+            border-radius: 22px;
+            color: white;
+            background: linear-gradient(135deg, #312e81, #6d5dfc 58%, #8b5cf6);
+            box-shadow: 0 18px 40px rgba(76, 63, 180, .24);
+        }
+
+        .admin-hero-title {
+            font-size: 20px;
+            font-weight: 850;
+        }
+
+        .admin-hero-subtitle {
+            margin-top: 5px;
+            font-size: 12px;
+            line-height: 1.45;
+            opacity: .86;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .admin-stat {
+            padding: 14px;
+            border-radius: 18px;
+            background: var(--card);
+            box-shadow: var(--shadow);
+        }
+
+        .admin-stat-value {
+            font-size: 22px;
+            font-weight: 850;
+        }
+
+        .admin-stat-label {
+            margin-top: 3px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .admin-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .admin-action {
+            min-height: 88px;
+            padding: 14px;
+            border: 0;
+            border-radius: 18px;
+            text-align: left;
+            background: var(--card);
+            box-shadow: var(--shadow);
+            cursor: pointer;
+        }
+
+        .admin-action:active {
+            transform: scale(.98);
+        }
+
+        .admin-action-icon {
+            font-size: 22px;
+        }
+
+        .admin-action-title {
+            margin-top: 8px;
+            font-size: 13px;
+            font-weight: 850;
+        }
+
+        .admin-action-subtitle {
+            margin-top: 2px;
+            color: var(--muted);
+            font-size: 10px;
+            line-height: 1.35;
+        }
+
+        .admin-toolbar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .admin-input,
+        .admin-select,
+        .admin-textarea {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            outline: none;
+            background: rgba(255,255,255,.92);
+            color: var(--text);
+            font: inherit;
+        }
+
+        .admin-textarea {
+            min-height: 95px;
+            resize: vertical;
+        }
+
+        .admin-input:focus,
+        .admin-select:focus,
+        .admin-textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(109,93,252,.10);
+        }
+
+        .admin-btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .admin-btn {
+            flex: 1;
+            min-width: 105px;
+            padding: 10px 12px;
+            border: 0;
+            border-radius: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            background: #eeecff;
+            color: #4c3fd1;
+        }
+
+        .admin-btn.primary {
+            color: white;
+            background: var(--accent);
+        }
+
+        .admin-btn.danger {
+            color: #b91c1c;
+            background: #fee2e2;
+        }
+
+        .admin-btn.success {
+            color: #166534;
+            background: #dcfce7;
+        }
+
+        .admin-meta {
+            margin-top: 8px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.55;
+        }
+
+        .admin-badge {
+            display: inline-block;
+            padding: 5px 8px;
+            margin: 2px 4px 2px 0;
+            border-radius: 999px;
+            background: #f0eeff;
+            color: #5145cd;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .admin-empty {
+            padding: 25px 16px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .admin-section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 6px 0 12px;
+        }
+
+        .admin-section-head strong {
+            font-size: 17px;
+        }
+
+        .admin-link {
+            border: 0;
+            background: transparent;
+            color: var(--accent);
+            font-weight: 800;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 
@@ -664,7 +869,7 @@
 </div>
 
 
-<nav class="bottom-nav">
+<nav class="bottom-nav" id="bottomNav">
 
     <button class="nav-item active" onclick="goHome(this)">
         <span class="nav-icon">🏠</span>
@@ -686,6 +891,11 @@
         Профиль
     </button>
 
+    <button class="nav-item" id="adminNav" style="display:none" onclick="setActive(this); openAdminScreen()">
+        <span class="nav-icon">🛡</span>
+        Админ
+    </button>
+
 </nav>
 
 
@@ -697,8 +907,9 @@
     const tg = window.Telegram?.WebApp;
 
     // API на твоём VPS через Cloudflare Tunnel.
-const API_BASE = "https://leave-skirt-detection-boats.trycloudflare.com";
-alert("initData: " + (tg?.initData ? "ЕСТЬ" : "НЕТ"));
+    const API_BASE = "https://fails-student-bathrooms-remain.trycloudflare.com";
+    let currentProfile = null;
+    let adminOverviewCache = null;
 
     if (tg) {
         tg.ready();
@@ -768,6 +979,32 @@ alert("initData: " + (tg?.initData ? "ЕСТЬ" : "НЕТ"));
         return payload;
     }
 
+
+    async function apiFile(path) {
+        const initData = getInitData();
+        if (!initData) {
+            throw new Error("Telegram не передал данные пользователя");
+        }
+
+        const response = await fetch(`${API_BASE}${path}`, {
+            headers: { "X-Telegram-Init-Data": initData }
+        });
+
+        if (!response.ok) {
+            let message = `Ошибка API: ${response.status}`;
+            try {
+                const payload = await response.json();
+                message = payload?.error || message;
+            } catch {}
+            throw new Error(message);
+        }
+
+        return {
+            blob: await response.blob(),
+            contentType: response.headers.get("Content-Type") || "application/octet-stream"
+        };
+    }
+
     function calculateLevel(hours) {
         const value = Number(hours) || 0;
 
@@ -780,6 +1017,15 @@ alert("initData: " + (tg?.initData ? "ЕСТЬ" : "НЕТ"));
     }
 
     function applyProfile(profile) {
+        currentProfile = profile;
+
+        const adminNav = document.getElementById("adminNav");
+        const bottomNav = document.getElementById("bottomNav");
+        const isAdmin = Number(profile.access_level ?? -1) >= 1 || Boolean(profile.is_admin);
+
+        if (adminNav) adminNav.style.display = isAdmin ? "block" : "none";
+        if (bottomNav) bottomNav.classList.toggle("has-admin", isAdmin);
+
         const hours = Number(profile.hours || 0);
         const level = calculateLevel(hours);
 
@@ -978,6 +1224,18 @@ alert("initData: " + (tg?.initData ? "ЕСТЬ" : "НЕТ"));
 
         try {
             await loadProfile();
+
+            if (Number(currentProfile?.access_level ?? -1) < 0) {
+                document.getElementById("userName").textContent = currentProfile?.full_name || "Анкета на модерации";
+                document.getElementById("eventsList").innerHTML = `
+                    <div class="event-top"><div>
+                        <div class="event-title">⏳ Анкета на модерации</div>
+                        <div class="event-info">После одобрения станут доступны мероприятия и остальные функции.</div>
+                    </div></div>
+                `;
+                return;
+            }
+
             await loadEvents(false);
         } catch (error) {
             notify(`❌ ${error.message}`);
@@ -1129,6 +1387,532 @@ alert("initData: " + (tg?.initData ? "ЕСТЬ" : "НЕТ"));
     }
 
 
+
+
+    function adminLevelLabel(level) {
+        const labels = {
+            "-1": "Модерация",
+            "0": "Волонтёр",
+            "1": "Админ 1",
+            "2": "Админ 2",
+            "3": "Админ 3",
+            "4": "Админ 4"
+        };
+        return labels[String(level)] || `Уровень ${level}`;
+    }
+
+    function adminBackButton() {
+        return `<button class="admin-link" onclick="renderAdminOverview()">← Обзор</button>`;
+    }
+
+    async function openAdminScreen() {
+        openScreen("adminScreen");
+        document.getElementById("adminContent").innerHTML = "";
+        document.getElementById("adminDashboard").innerHTML = `
+            <div class="screen-card">
+                <h3>Загрузка админ-панели…</h3>
+                <p>Проверяем права на сервере.</p>
+            </div>
+        `;
+
+        try {
+            const payload = await api("/api/admin/overview");
+            adminOverviewCache = payload;
+            renderAdminOverview();
+        } catch (error) {
+            document.getElementById("adminDashboard").innerHTML = `
+                <div class="screen-card">
+                    <h3>⛔ Нет доступа</h3>
+                    <p>${escapeHtml(error.message)}</p>
+                </div>
+            `;
+        }
+    }
+
+    function renderAdminOverview() {
+        if (!adminOverviewCache) {
+            openAdminScreen();
+            return;
+        }
+
+        const { admin, counts, permissions } = adminOverviewCache;
+        const scopeText = admin.global ? "Все команды" : (admin.team || "Команда не указана");
+
+        document.getElementById("adminDashboard").innerHTML = `
+            <div class="admin-hero">
+                <div class="admin-hero-title">${escapeHtml(admin.full_name || "Администратор")}</div>
+                <div class="admin-hero-subtitle">
+                    Уровень ${Number(admin.level)} • ${escapeHtml(scopeText)}
+                    ${admin.global ? " • глобальный доступ" : ""}
+                </div>
+            </div>
+
+            <div class="admin-stats">
+                <div class="admin-stat">
+                    <div class="admin-stat-value">${Number(counts.pending || 0)}</div>
+                    <div class="admin-stat-label">анкет на модерации</div>
+                </div>
+                <div class="admin-stat">
+                    <div class="admin-stat-value">${Number(counts.volunteers || 0)}</div>
+                    <div class="admin-stat-label">волонтёров</div>
+                </div>
+                <div class="admin-stat">
+                    <div class="admin-stat-value">${Number(counts.hours || 0)}</div>
+                    <div class="admin-stat-label">часов всего</div>
+                </div>
+                <div class="admin-stat">
+                    <div class="admin-stat-value">${Number(counts.events || 0)}</div>
+                    <div class="admin-stat-label">мероприятий</div>
+                </div>
+            </div>
+
+            <div class="admin-actions">
+                <button class="admin-action" onclick="adminLoadPending()">
+                    <div class="admin-action-icon">📋</div>
+                    <div class="admin-action-title">Модерация</div>
+                    <div class="admin-action-subtitle">Принять или отклонить анкеты</div>
+                </button>
+
+                ${permissions.hours ? `
+                    <button class="admin-action" onclick="adminLoadHours()">
+                        <div class="admin-action-icon">⏳</div>
+                        <div class="admin-action-title">Запросы часов</div>
+                        <div class="admin-action-subtitle">${Number(counts.hour_requests || 0)} ожидают проверки</div>
+                    </button>
+                ` : ""}
+
+                <button class="admin-action" onclick="adminLoadUsers()">
+                    <div class="admin-action-icon">👥</div>
+                    <div class="admin-action-title">Волонтёры</div>
+                    <div class="admin-action-subtitle">Поиск, профиль и управление</div>
+                </button>
+
+                <button class="admin-action" onclick="adminLoadEvents()">
+                    <div class="admin-action-icon">📅</div>
+                    <div class="admin-action-title">Мероприятия</div>
+                    <div class="admin-action-subtitle">Просмотр${permissions.events_manage ? ", создание и удаление" : ""}</div>
+                </button>
+            </div>
+        `;
+
+        document.getElementById("adminContent").innerHTML = "";
+    }
+
+    async function refreshAdminOverview(silent = true) {
+        try {
+            adminOverviewCache = await api("/api/admin/overview");
+            if (!silent) renderAdminOverview();
+        } catch (error) {
+            notify(`❌ ${error.message}`);
+        }
+    }
+
+    async function adminLoadPending() {
+        document.getElementById("adminContent").innerHTML = `
+            <div class="screen-card"><h3>Загрузка заявок…</h3></div>
+        `;
+
+        try {
+            const payload = await api("/api/admin/pending");
+            const applications = payload.applications || [];
+
+            document.getElementById("adminDashboard").innerHTML = `
+                <div class="admin-section-head">
+                    <strong>📋 Модерация анкет</strong>
+                    ${adminBackButton()}
+                </div>
+            `;
+
+            if (!applications.length) {
+                document.getElementById("adminContent").innerHTML = `
+                    <div class="screen-card admin-empty">✅ Новых анкет сейчас нет.</div>
+                `;
+                return;
+            }
+
+            document.getElementById("adminContent").innerHTML = applications.map(p => `
+                <div class="screen-card" id="pending-${Number(p.telegram_id)}">
+                    <h3>${escapeHtml(p.full_name || "Без имени")}</h3>
+                    <div class="admin-meta">
+                        📍 ${escapeHtml(p.city || "Не указан")}<br>
+                        🏷 ${escapeHtml(p.source_team || "Команда не указана")}<br>
+                        🎂 ${escapeHtml(p.birth_date || "Дата рождения не указана")}<br>
+                        🎓 ${escapeHtml(p.school || "Учебное заведение не указано")}<br>
+                        📞 ${escapeHtml(p.phone || "Телефон не указан")}<br>
+                        ${p.username ? `📝 @${escapeHtml(p.username)}<br>` : ""}
+                        🆔 ${Number(p.telegram_id)}
+                    </div>
+                    <div id="pending-doc-${Number(p.telegram_id)}"></div>
+                    <div class="admin-btn-row">
+                        <button class="admin-btn" onclick="adminOpenDocument(${Number(p.telegram_id)})">📎 Документ</button>
+                        <button class="admin-btn success" onclick="adminApproveApplication(${Number(p.telegram_id)})">✅ Принять</button>
+                        <button class="admin-btn danger" onclick="adminRejectApplication(${Number(p.telegram_id)})">❌ Отклонить</button>
+                    </div>
+                </div>
+            `).join("");
+        } catch (error) {
+            notify(`❌ ${error.message}`);
+        }
+    }
+
+
+    async function adminOpenDocument(userId) {
+        const box = document.getElementById(`pending-doc-${userId}`);
+        if (!box) return;
+
+        box.innerHTML = `<div class="admin-meta" style="margin-top:12px">⏳ Загружаем документ…</div>`;
+
+        try {
+            const { blob, contentType } = await apiFile(`/api/admin/pending/${userId}/document`);
+            const url = URL.createObjectURL(blob);
+
+            if (contentType.startsWith("image/")) {
+                box.innerHTML = `
+                    <img src="${url}" alt="Документ анкеты"
+                         style="width:100%;max-height:440px;object-fit:contain;margin-top:12px;border-radius:14px;background:#f3f4f6">
+                `;
+            } else {
+                box.innerHTML = `
+                    <iframe src="${url}" title="Документ анкеты"
+                            style="width:100%;height:430px;margin-top:12px;border:1px solid var(--line);border-radius:14px;background:white"></iframe>
+                    <div class="admin-meta">Если документ не открылся во встроенном просмотрщике, это ограничение Telegram WebView.</div>
+                `;
+            }
+        } catch (error) {
+            box.innerHTML = `<div class="admin-meta" style="color:#b91c1c;margin-top:12px">❌ ${escapeHtml(error.message)}</div>`;
+        }
+    }
+
+    async function adminApproveApplication(userId) {
+        if (!confirm("Одобрить эту анкету?")) return;
+        try {
+            await api(`/api/admin/pending/${userId}/approve`, { method: "POST" });
+            notify("✅ Анкета одобрена");
+            await refreshAdminOverview(true);
+            await adminLoadPending();
+        } catch (error) {
+            notify(`❌ ${error.message}`);
+        }
+    }
+
+    async function adminRejectApplication(userId) {
+        const reason = prompt("Причина отклонения (можно оставить пустой):", "");
+        if (reason === null) return;
+        if (!confirm("Отклонить анкету? Пользователь сможет зарегистрироваться заново.")) return;
+
+        try {
+            await api(`/api/admin/pending/${userId}/reject`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ reason })
+            });
+            notify("✅ Анкета отклонена");
+            await refreshAdminOverview(true);
+            await adminLoadPending();
+        } catch (error) {
+            notify(`❌ ${error.message}`);
+        }
+    }
+
+    async function adminLoadHours() {
+        try {
+            const payload = await api("/api/admin/hour-requests");
+            const requests = payload.requests || [];
+
+            document.getElementById("adminDashboard").innerHTML = `
+                <div class="admin-section-head">
+                    <strong>⏳ Запросы часов</strong>
+                    ${adminBackButton()}
+                </div>
+            `;
+
+            if (!requests.length) {
+                document.getElementById("adminContent").innerHTML = `
+                    <div class="screen-card admin-empty">✅ Запросов на часы нет.</div>
+                `;
+                return;
+            }
+
+            document.getElementById("adminContent").innerHTML = requests.map(r => `
+                <div class="screen-card">
+                    <h3>${escapeHtml(r.full_name || "Волонтёр")}</h3>
+                    <div class="admin-meta">
+                        🏷 ${escapeHtml(r.team || "")}<br>
+                        💬 ${escapeHtml(r.details || "Без описания")}
+                    </div>
+                    <div class="admin-btn-row">
+                        <button class="admin-btn success" onclick="adminApproveHours(${Number(r.id)})">✅ Начислить</button>
+                        <button class="admin-btn danger" onclick="adminRejectHours(${Number(r.id)})">❌ Отклонить</button>
+                    </div>
+                </div>
+            `).join("");
+        } catch (error) {
+            notify(`❌ ${error.message}`);
+        }
+    }
+
+    async function adminApproveHours(requestId) {
+        const raw = prompt("Сколько часов начислить?", "1");
+        if (raw === null) return;
+        const hours = Number(raw);
+        if (!Number.isInteger(hours) || hours <= 0 || hours > 500) {
+            notify("⚠️ Введи целое число от 1 до 500");
+            return;
+        }
+
+        try {
+            await api(`/api/admin/hour-requests/${requestId}/approve`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ hours })
+            });
+            notify(`✅ Начислено +${hours} ч.`);
+            await refreshAdminOverview(true);
+            await adminLoadHours();
+        } catch (error) {
+            notify(`❌ ${error.message}`);
+        }
+    }
+
+    async function adminRejectHours(requestId) {
+        if (!confirm("Отклонить запрос на часы?")) return;
+        try {
+            await api(`/api/admin/hour-requests/${requestId}/reject`, { method: "POST" });
+            notify("✅ Запрос отклонён");
+            await refreshAdminOverview(true);
+            await adminLoadHours();
+        } catch (error) {
+            notify(`❌ ${error.message}`);
+        }
+    }
+
+    async function adminLoadUsers() {
+        document.getElementById("adminDashboard").innerHTML = `
+            <div class="admin-section-head">
+                <strong>👥 Волонтёры</strong>
+                ${adminBackButton()}
+            </div>
+            <div class="admin-toolbar">
+                <input id="adminUserSearch" class="admin-input" placeholder="ФИО, username или Telegram ID" onkeydown="if(event.key==='Enter') adminSearchUsers()">
+                <button class="admin-btn primary" style="flex:0 0 auto;min-width:72px" onclick="adminSearchUsers()">Найти</button>
+            </div>
+        `;
+        await adminSearchUsers();
+    }
+
+    async function adminSearchUsers() {
+        const input = document.getElementById("adminUserSearch");
+        const q = input ? input.value.trim() : "";
+        document.getElementById("adminContent").innerHTML = `
+            <div class="screen-card"><h3>Поиск…</h3></div>
+        `;
+
+        try {
+            const payload = await api(`/api/admin/users?q=${encodeURIComponent(q)}`);
+            const users = payload.users || [];
+            const permissions = adminOverviewCache?.permissions || {};
+
+            if (!users.length) {
+                document.getElementById("adminContent").innerHTML = `
+                    <div class="screen-card admin-empty">Никого не найдено.</div>
+                `;
+                return;
+            }
+
+            document.getElementById("adminContent").innerHTML = users.map(u => `
+                <div class="screen-card">
+                    <h3>${escapeHtml(u.full_name || "Без имени")}</h3>
+                    <div style="margin-top:8px">
+                        <span class="admin-badge">${escapeHtml(adminLevelLabel(u.access_level))}</span>
+                        ${u.role_title ? `<span class="admin-badge">${escapeHtml(u.role_title)}</span>` : ""}
+                    </div>
+                    <div class="admin-meta">
+                        📍 ${escapeHtml(u.city || "Не указан")}<br>
+                        🏷 ${escapeHtml(u.source_team || "Команда не указана")}<br>
+                        ⏱ ${Number(u.hours || 0)} ч. • 🪙 ${Number(u.coins || 0)}<br>
+                        🛡 ${escapeHtml(u.status || "Активен")}<br>
+                        ${u.username ? `📝 @${escapeHtml(u.username)}<br>` : ""}
+                        🆔 ${Number(u.telegram_id)}
+                    </div>
+
+                    ${(permissions.users_manage || permissions.set_access_level) ? `
+                        <div class="admin-btn-row">
+                            ${permissions.users_manage ? `
+                                <button class="admin-btn" onclick="adminSetRole(${Number(u.telegram_id)}, '${encodeURIComponent(u.role_title || "")}')">✍️ Роль</button>
+                                <button class="admin-btn" onclick="adminSetCity(${Number(u.telegram_id)}, '${encodeURIComponent(u.city || "")}')">📍 Город</button>
+                            ` : ""}
+                            ${permissions.set_access_level ? `
+                                <button class="admin-btn" onclick="adminSetLevel(${Number(u.telegram_id)}, ${Number(u.access_level)})">⭐ Уровень</button>
+                            ` : ""}
+                        </div>
+                    ` : ""}
+                </div>
+            `).join("");
+        } catch (error) {
+            notify(`❌ ${error.message}`);
+        }
+    }
+
+    async function adminSetRole(userId, encodedCurrent) {
+        const current = decodeURIComponent(encodedCurrent || "");
+        const roleTitle = prompt("Новая роль / приписка:", current);
+        if (roleTitle === null || !roleTitle.trim()) return;
+
+        try {
+            await api(`/api/admin/users/${userId}/role`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ role_title: roleTitle.trim() })
+            });
+            notify("✅ Роль обновлена");
+            await adminSearchUsers();
+        } catch (error) {
+            notify(`❌ ${error.message}`);
+        }
+    }
+
+    async function adminSetCity(userId, encodedCurrent) {
+        const current = decodeURIComponent(encodedCurrent || "");
+        const city = prompt("Новый город: Актау или Астана", current || "Актау");
+        if (city === null) return;
+
+        try {
+            await api(`/api/admin/users/${userId}/city`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ city: city.trim() })
+            });
+            notify("✅ Город обновлён");
+            await adminSearchUsers();
+        } catch (error) {
+            notify(`❌ ${error.message}`);
+        }
+    }
+
+    async function adminSetLevel(userId, currentLevel) {
+        const raw = prompt("Уровень доступа от -1 до 4:", String(currentLevel));
+        if (raw === null) return;
+        const accessLevel = Number(raw);
+        if (!Number.isInteger(accessLevel) || accessLevel < -1 || accessLevel > 4) {
+            notify("⚠️ Уровень должен быть от -1 до 4");
+            return;
+        }
+
+        try {
+            await api(`/api/admin/users/${userId}/access-level`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ access_level: accessLevel })
+            });
+            notify("✅ Уровень доступа обновлён");
+            await adminSearchUsers();
+        } catch (error) {
+            notify(`❌ ${error.message}`);
+        }
+    }
+
+    async function adminLoadEvents() {
+        try {
+            const payload = await api("/api/admin/events");
+            const events = payload.events || [];
+            const canManage = Boolean(adminOverviewCache?.permissions?.events_manage);
+
+            document.getElementById("adminDashboard").innerHTML = `
+                <div class="admin-section-head">
+                    <strong>📅 Мероприятия</strong>
+                    ${adminBackButton()}
+                </div>
+                ${canManage ? `
+                    <button class="screen-action" style="margin:0 0 12px" onclick="adminShowCreateEventForm()">➕ Создать мероприятие</button>
+                ` : ""}
+            `;
+
+            if (!events.length) {
+                document.getElementById("adminContent").innerHTML = `
+                    <div class="screen-card admin-empty">Мероприятий пока нет.</div>
+                `;
+                return;
+            }
+
+            document.getElementById("adminContent").innerHTML = events.map(e => `
+                <div class="screen-card">
+                    <h3>${escapeHtml(e.title || "Без названия")}</h3>
+                    <div class="admin-meta">
+                        📍 ${escapeHtml(e.city || "Не указан")}<br>
+                        👥 ${Number(e.current_participants || 0)}${Number(e.max_participants || 0) > 0 ? ` / ${Number(e.max_participants)}` : " • без лимита"}<br>
+                        📝 ${escapeHtml(e.description || "Без описания")}
+                    </div>
+                    ${canManage ? `
+                        <div class="admin-btn-row">
+                            <button class="admin-btn danger" onclick="adminDeleteEvent(${Number(e.id)})">🗑 Удалить</button>
+                        </div>
+                    ` : ""}
+                </div>
+            `).join("");
+        } catch (error) {
+            notify(`❌ ${error.message}`);
+        }
+    }
+
+    function adminShowCreateEventForm() {
+        document.getElementById("adminContent").innerHTML = `
+            <div class="screen-card">
+                <h3>➕ Новое мероприятие</h3>
+                <div style="display:grid;gap:9px;margin-top:12px">
+                    <input id="eventTitleInput" class="admin-input" placeholder="Название">
+                    <textarea id="eventDescriptionInput" class="admin-textarea" placeholder="Описание"></textarea>
+                    <select id="eventCityInput" class="admin-select">
+                        <option value="Актау">Актау</option>
+                        <option value="Астана">Астана</option>
+                    </select>
+                    <input id="eventMaxInput" class="admin-input" type="number" min="0" value="0" placeholder="Лимит участников; 0 = без лимита">
+                </div>
+                <div class="admin-btn-row">
+                    <button class="admin-btn primary" onclick="adminCreateEvent()">✅ Создать</button>
+                    <button class="admin-btn" onclick="adminLoadEvents()">Отмена</button>
+                </div>
+            </div>
+        `;
+    }
+
+    async function adminCreateEvent() {
+        const title = document.getElementById("eventTitleInput")?.value.trim() || "";
+        const description = document.getElementById("eventDescriptionInput")?.value.trim() || "";
+        const city = document.getElementById("eventCityInput")?.value || "";
+        const maxParticipants = Number(document.getElementById("eventMaxInput")?.value || 0);
+
+        try {
+            await api("/api/admin/events", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title,
+                    description,
+                    city,
+                    max_participants: maxParticipants
+                })
+            });
+            notify("✅ Мероприятие создано");
+            await refreshAdminOverview(true);
+            await adminLoadEvents();
+        } catch (error) {
+            notify(`❌ ${error.message}`);
+        }
+    }
+
+    async function adminDeleteEvent(eventId) {
+        if (!confirm("Точно удалить мероприятие?")) return;
+        try {
+            await api(`/api/admin/events/${eventId}`, { method: "DELETE" });
+            notify("✅ Мероприятие удалено");
+            await refreshAdminOverview(true);
+            await adminLoadEvents();
+        } catch (error) {
+            notify(`❌ ${error.message}`);
+        }
+    }
+
+
     document.addEventListener("DOMContentLoaded", loadDashboard);
 </script>
 
@@ -1200,6 +1984,25 @@ alert("initData: " + (tg?.initData ? "ЕСТЬ" : "НЕТ"));
                 <h3>Загрузка профиля…</h3>
             </div>
         </div>
+    </div>
+</section>
+
+
+<section id="adminScreen" class="screen">
+    <div class="screen-inner">
+        <div class="screen-header">
+            <button class="back-btn" onclick="goHome(document.querySelector('.nav-item'))">←</button>
+            <div class="screen-title">🛡 Админ-панель</div>
+        </div>
+
+        <div id="adminDashboard">
+            <div class="screen-card">
+                <h3>Загрузка админ-панели…</h3>
+                <p>Проверяем права и получаем данные.</p>
+            </div>
+        </div>
+
+        <div id="adminContent"></div>
     </div>
 </section>
 
